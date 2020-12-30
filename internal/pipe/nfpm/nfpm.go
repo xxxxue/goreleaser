@@ -187,7 +187,22 @@ func create(ctx *context.Context, fpm config.NFPM, format, arch string, binaries
 
 	var contents files.Contents
 	for _, f := range overridden.Contents {
-		contents = append(contents, f)
+		var ff = files.Content{
+			Source:      f.Source,
+			Destination: f.Destination,
+			Type:        f.Type,
+			Packager:    f.Packager,
+		}
+		if f.FileInfo != nil {
+			ff.FileInfo = &files.ContentFileInfo{
+				Owner: f.FileInfo.Owner,
+				Group: f.FileInfo.Group,
+				Mode:  f.FileInfo.Mode,
+				MTime: f.FileInfo.MTime,
+				Size:  f.FileInfo.Size,
+			}
+		}
+		contents = append(contents, &ff)
 	}
 
 	// FPM meta package should not contain binaries at all
