@@ -41,7 +41,7 @@ var lock sync.Mutex
 type Pipe struct{}
 
 func (Pipe) String() string {
-	return "archives"
+	return "档案"
 }
 
 // Default sets the pipe defaults.

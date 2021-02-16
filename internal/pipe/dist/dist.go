@@ -22,11 +22,11 @@ func (Pipe) String() string {
 func (Pipe) Run(ctx *context.Context) (err error) {
 	_, err = os.Stat(ctx.Config.Dist)
 	if os.IsNotExist(err) {
-		log.Debug("./dist doesn't exist, creating empty folder")
+		println("./dist 不存在, 创建空文件夹:",ctx.Config.Dist)
 		return mkdir(ctx)
 	}
 	if ctx.RmDist {
-		log.Info("--rm-dist is set, cleaning it up")
+		log.Info("--rm-dist 已经设置, 开始清理dist目录")
 		err = os.RemoveAll(ctx.Config.Dist)
 		if err == nil {
 			err = mkdir(ctx)
@@ -38,13 +38,13 @@ func (Pipe) Run(ctx *context.Context) (err error) {
 		return
 	}
 	if len(files) != 0 {
-		log.Debugf("there are %d files on ./dist", len(files))
+		log.Debugf("有 %d 个文件  on ./dist", len(files))
 		return fmt.Errorf(
-			"%s is not empty, remove it before running goreleaser or use the --rm-dist flag",
+			"%s 不为空，请在运行goreleaser之前将其删除或使用--rm-dist标志",
 			ctx.Config.Dist,
 		)
 	}
-	log.Debug("./dist is empty")
+	log.Debug("./dist 是空的")
 	return mkdir(ctx)
 }
 

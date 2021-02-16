@@ -11,15 +11,9 @@ import (
 	"github.com/goreleaser/goreleaser/internal/pipe/brew"
 	"github.com/goreleaser/goreleaser/internal/pipe/build"
 	"github.com/goreleaser/goreleaser/internal/pipe/checksums"
-	"github.com/goreleaser/goreleaser/internal/pipe/docker"
-	"github.com/goreleaser/goreleaser/internal/pipe/milestone"
 	"github.com/goreleaser/goreleaser/internal/pipe/nfpm"
-	"github.com/goreleaser/goreleaser/internal/pipe/project"
-	"github.com/goreleaser/goreleaser/internal/pipe/release"
-	"github.com/goreleaser/goreleaser/internal/pipe/scoop"
 	"github.com/goreleaser/goreleaser/internal/pipe/sign"
 	"github.com/goreleaser/goreleaser/internal/pipe/snapcraft"
-	"github.com/goreleaser/goreleaser/internal/pipe/snapshot"
 	"github.com/goreleaser/goreleaser/internal/pipe/sourcearchive"
 	"github.com/goreleaser/goreleaser/pkg/context"
 )
@@ -36,9 +30,9 @@ type Defaulter interface {
 // Defaulters is the list of defaulters.
 // nolint: gochecknoglobals
 var Defaulters = []Defaulter{
-	snapshot.Pipe{},
-	release.Pipe{},
-	project.Pipe{},
+	//snapshot.Pipe{},
+	//release.Pipe{},
+	//project.Pipe{},
 	build.Pipe{},
 	sourcearchive.Pipe{},
 	archive.Pipe{},
@@ -46,10 +40,10 @@ var Defaulters = []Defaulter{
 	snapcraft.Pipe{},
 	checksums.Pipe{},
 	sign.Pipe{},
-	docker.Pipe{},
+	//docker.Pipe{},
 	artifactory.Pipe{},
 	blob.Pipe{},
 	brew.Pipe{},
-	scoop.Pipe{},
-	milestone.Pipe{},
+	//scoop.Pipe{},
+	//milestone.Pipe{},
 }

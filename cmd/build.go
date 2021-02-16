@@ -42,18 +42,18 @@ func newBuildCmd() *buildCmd {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			start := time.Now()
 
-			log.Infof(color.New(color.Bold).Sprint("building..."))
+			log.Infof(color.New(color.Bold).Sprint("构建中..."))
 
 			ctx, err := buildProject(root.opts)
 			if err != nil {
-				return wrapError(err, color.New(color.Bold).Sprintf("build failed after %0.2fs", time.Since(start).Seconds()))
+				return wrapError(err, color.New(color.Bold).Sprintf("构建失败 %0.2fs", time.Since(start).Seconds()))
 			}
 
 			if ctx.Deprecated {
-				log.Warn(color.New(color.Bold).Sprintf("your config is using deprecated properties, check logs above for details"))
+				log.Warn(color.New(color.Bold).Sprintf("您的配置正在使用不赞成使用的属性，请查看上面的日志以了解详细信息"))
 			}
 
-			log.Infof(color.New(color.Bold).Sprintf("build succeeded after %0.2fs", time.Since(start).Seconds()))
+			log.Infof(color.New(color.Bold).Sprintf("构建成功 %0.2fs", time.Since(start).Seconds()))
 			return nil
 		},
 	}
@@ -72,6 +72,7 @@ func newBuildCmd() *buildCmd {
 	return root
 }
 
+// 构建项目
 func buildProject(options buildOpts) (*context.Context, error) {
 	cfg, err := loadConfig(options.config)
 	if err != nil {

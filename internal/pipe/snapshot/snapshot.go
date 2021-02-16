@@ -13,7 +13,7 @@ import (
 type Pipe struct{}
 
 func (Pipe) String() string {
-	return "snapshotting"
+	return "快照"
 }
 
 // Default sets the pipe defaults.

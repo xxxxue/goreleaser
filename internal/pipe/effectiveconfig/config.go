@@ -14,7 +14,7 @@ type Pipe struct {
 }
 
 func (Pipe) String() string {
-	return "writing effective config file"
+	return "编写有效的配置文件"
 }
 
 // Run the pipe.

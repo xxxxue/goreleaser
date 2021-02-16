@@ -200,7 +200,7 @@ func (u *skipUploader) Close() error                            { return nil }
 func (u *skipUploader) Open(_ *context.Context, _ string) error { return nil }
 
 func (u *skipUploader) Upload(_ *context.Context, path string, _ []byte) error {
-	log.WithField("path", path).Warn("upload skipped because skip-publish is set")
+	log.WithField("path", path).Warn("由于设置了“跳过发布”，因此上载已跳过")
 	return nil
 }
 

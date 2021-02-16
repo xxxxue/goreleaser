@@ -5,7 +5,6 @@ package env
 import (
 	"bufio"
 	"errors"
-	"fmt"
 	"os"
 
 	"github.com/apex/log"
@@ -14,17 +13,17 @@ import (
 )
 
 // ErrMissingToken indicates an error when GITHUB_TOKEN, GITLAB_TOKEN and GITEA_TOKEN are all missing in the environment.
-var ErrMissingToken = errors.New("missing GITHUB_TOKEN, GITLAB_TOKEN and GITEA_TOKEN")
+var ErrMissingToken = errors.New("缺少 GITHUB_TOKEN, GITLAB_TOKEN 和 GITEA_TOKEN")
 
 // ErrMultipleTokens indicates that multiple tokens are defined. ATM only one of them if allowed.
 // See https://github.com/goreleaser/goreleaser/pull/809
-var ErrMultipleTokens = errors.New("multiple tokens defined. Only one is allowed")
+var ErrMultipleTokens = errors.New("定义了多个 tokens . 只允许一个")
 
 // Pipe for env.
 type Pipe struct{}
 
 func (Pipe) String() string {
-	return "loading environment variables"
+	return "加载环境变量"
 }
 
 func setDefaultTokenFiles(ctx *context.Context) {
@@ -41,6 +40,7 @@ func setDefaultTokenFiles(ctx *context.Context) {
 }
 
 // Run the pipe.
+// 运行管道
 func (Pipe) Run(ctx *context.Context) error {
 	setDefaultTokenFiles(ctx)
 	githubToken, githubTokenErr := loadEnv("GITHUB_TOKEN", ctx.Config.EnvFiles.GitHubToken)
@@ -69,19 +69,19 @@ func (Pipe) Run(ctx *context.Context) error {
 	}
 
 	if githubToken != "" {
-		log.Debug("token type: github")
+		log.Debug("token 类型: github")
 		ctx.TokenType = context.TokenTypeGitHub
 		ctx.Token = githubToken
 	}
 
 	if gitlabToken != "" {
-		log.Debug("token type: gitlab")
+		log.Debug("token 类型: gitlab")
 		ctx.TokenType = context.TokenTypeGitLab
 		ctx.Token = gitlabToken
 	}
 
 	if giteaToken != "" {
-		log.Debug("token type: gitea")
+		log.Debug("token 类型: gitea")
 		ctx.TokenType = context.TokenTypeGitea
 		ctx.Token = giteaToken
 	}
@@ -94,21 +94,21 @@ func checkErrors(ctx *context.Context, noTokens, noTokenErrs bool, gitlabTokenEr
 		return nil
 	}
 
-	if noTokens && noTokenErrs {
-		return ErrMissingToken
-	}
-
-	if gitlabTokenErr != nil {
-		return fmt.Errorf("failed to load gitlab token: %w", gitlabTokenErr)
-	}
-
-	if githubTokenErr != nil {
-		return fmt.Errorf("failed to load github token: %w", githubTokenErr)
-	}
-
-	if giteaTokenErr != nil {
-		return fmt.Errorf("failed to load gitea token: %w", giteaTokenErr)
-	}
+	//if noTokens && noTokenErrs {
+	//	return ErrMissingToken
+	//}
+	//
+	//if gitlabTokenErr != nil {
+	//	return fmt.Errorf("failed to load gitlab token: %w", gitlabTokenErr)
+	//}
+	//
+	//if githubTokenErr != nil {
+	//	return fmt.Errorf("failed to load github token: %w", githubTokenErr)
+	//}
+	//
+	//if giteaTokenErr != nil {
+	//	return fmt.Errorf("failed to load gitea token: %w", giteaTokenErr)
+	//}
 	return nil
 }
 

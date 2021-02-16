@@ -191,6 +191,7 @@ type Build struct {
 	Gomips       []string       `yaml:",omitempty"`
 	Targets      []string       `yaml:",omitempty"`
 	Ignore       []IgnoredBuild `yaml:",omitempty"`
+	// 设置 工作目录
 	Dir          string         `yaml:",omitempty"`
 	Main         string         `yaml:",omitempty"`
 	Ldflags      StringArray    `yaml:",omitempty"`
@@ -617,23 +618,26 @@ type Project struct {
 }
 
 // Load config file.
+// 加载 配置文件
 func Load(file string) (config Project, err error) {
 	f, err := os.Open(file) // #nosec
 	if err != nil {
 		return
 	}
 	defer f.Close()
-	log.WithField("file", file).Info("loading config file")
+	log.WithField("file", file).Info("加载配置文件")
 	return LoadReader(f)
 }
 
 // LoadReader config via io.Reader.
+// 通过io.Reader进行LoadReader配置。
+// 将 yaml 映射到 Project 对象
 func LoadReader(fd io.Reader) (config Project, err error) {
 	data, err := ioutil.ReadAll(fd)
 	if err != nil {
 		return config, err
 	}
 	err = yaml.UnmarshalStrict(data, &config)
-	log.WithField("config", config).Debug("loaded config file")
+	log.WithField("config", config).Debug("加载的配置文件")
 	return config, err
 }

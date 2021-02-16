@@ -16,7 +16,7 @@ const defaultNameTemplate = "{{ .Tag }}"
 type Pipe struct{}
 
 func (Pipe) String() string {
-	return "milestones"
+	return "里程碑"
 }
 
 // Default sets the pipe defaults.

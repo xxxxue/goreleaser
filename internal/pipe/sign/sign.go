@@ -23,7 +23,7 @@ import (
 type Pipe struct{}
 
 func (Pipe) String() string {
-	return "signing artifacts"
+	return "签名文物"
 }
 
 // Default sets the Pipes defaults.

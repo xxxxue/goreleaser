@@ -25,7 +25,7 @@ var ErrInvalidSortDirection = errors.New("invalid sort direction")
 type Pipe struct{}
 
 func (Pipe) String() string {
-	return "generating changelog"
+	return "生成变更日志"
 }
 
 // Run the pipe.

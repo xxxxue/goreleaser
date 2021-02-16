@@ -21,7 +21,7 @@ import (
 type Pipe struct{}
 
 func (Pipe) String() string {
-	return "calculating checksums"
+	return "计算校验和"
 }
 
 // Default sets the pipe defaults.

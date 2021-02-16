@@ -11,11 +11,11 @@ import (
 // ExtractRepoFromConfig gets the repo name from the Git config.
 func ExtractRepoFromConfig() (result config.Repo, err error) {
 	if !IsRepo() {
-		return result, errors.New("current folder is not a git repository")
+		return result, errors.New("当前文件夹不是git存储库")
 	}
 	out, err := Run("config", "--get", "remote.origin.url")
 	if err != nil {
-		return result, fmt.Errorf("repository doesn't have an `origin` remote")
+		return result, fmt.Errorf("存储库没有`origin`远程目录")
 	}
 	return ExtractRepoFromURL(out), nil
 }

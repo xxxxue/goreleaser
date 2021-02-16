@@ -122,7 +122,7 @@ func (Pipe) Run(ctx *context.Context) error {
 	for _, nfpm := range ctx.Config.NFPMs {
 		if len(nfpm.Formats) == 0 {
 			// FIXME: this assumes other nfpm configs will fail too...
-			return pipe.Skip("no output formats configured")
+			return pipe.Skip("未配置输出格式")
 		}
 		if err := doRun(ctx, nfpm); err != nil {
 			return err
@@ -138,7 +138,7 @@ func doRun(ctx *context.Context, fpm config.NFPM) error {
 		artifact.ByIDs(fpm.Builds...),
 	)).GroupByPlatform()
 	if len(linuxBinaries) == 0 {
-		return fmt.Errorf("no linux binaries found for builds %v", fpm.Builds)
+		return fmt.Errorf("找不到用于构建的linux二进制文件 %v", fpm.Builds)
 	}
 	var g = semerrgroup.New(ctx.Parallelism)
 	for _, format := range fpm.Formats {

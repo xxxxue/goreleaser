@@ -35,6 +35,8 @@ type Builder struct{}
 
 // WithDefaults sets the defaults for a golang build and returns it.
 func (*Builder) WithDefaults(build config.Build) (config.Build, error) {
+
+	// 设置编译的目录
 	if build.Dir == "" {
 		build.Dir = "."
 	}
@@ -67,7 +69,10 @@ func (*Builder) WithDefaults(build config.Build) (config.Build, error) {
 }
 
 // Build builds a golang build.
+// 构建一个  golang build
 func (*Builder) Build(ctx *context.Context, build config.Build, options api.Options) error {
+
+	// 检查是否有main方法
 	if err := checkMain(build); err != nil {
 		return err
 	}
@@ -124,9 +129,17 @@ func (*Builder) Build(ctx *context.Context, build config.Build, options api.Opti
 
 	cmd = append(cmd, processedLdFlags)
 
+	// 拼接 输出地址/名称   + 包名
 	cmd = append(cmd, "-o", options.Path, build.Main)
+
+	println("执行的命令: ")
+	println()
+	fmt.Printf("%v",cmd)
+	println()
+	println("执行的命令结束")
+	// 执行拼接的 命令
 	if err := run(ctx, cmd, env, build.Dir); err != nil {
-		return fmt.Errorf("failed to build for %s: %w", options.Target, err)
+		return fmt.Errorf("build 失败 %s: %w", options.Target, err)
 	}
 
 	if build.ModTimestamp != "" {
@@ -169,6 +182,7 @@ func joinLdFlags(flags []string) string {
 	return ldflagString.String()
 }
 
+// 执行拼接的命令
 func run(ctx *context.Context, command, env []string, dir string) error {
 	/* #nosec */
 	var cmd = exec.CommandContext(ctx, command[0], command[1:]...)
@@ -176,6 +190,8 @@ func run(ctx *context.Context, command, env []string, dir string) error {
 	cmd.Env = env
 	cmd.Dir = dir
 	log.Debug("running")
+
+	// 运行命令并返回其组合的标准输出和标准错误。
 	if out, err := cmd.CombinedOutput(); err != nil {
 		log.WithError(err).Debug("failed")
 		return errors.New(string(out))
@@ -191,7 +207,7 @@ func newBuildTarget(s string) (buildTarget, error) {
 	var t = buildTarget{}
 	parts := strings.Split(s, "_")
 	if len(parts) < 2 {
-		return t, fmt.Errorf("%s is not a valid build target", s)
+		return t, fmt.Errorf("%s 不是有效的构建目标", s)
 	}
 	t.os = parts[0]
 	t.arch = parts[1]
@@ -229,7 +245,7 @@ func checkMain(build config.Build) error {
 	if stat.IsDir() {
 		packs, err := parser.ParseDir(token.NewFileSet(), main, fileFilter, 0)
 		if err != nil {
-			return fmt.Errorf("failed to parse dir: %s: %w", main, err)
+			return fmt.Errorf("解析目录失败: %s: %w", main, err)
 		}
 		for _, pack := range packs {
 			for _, file := range pack.Files {
@@ -238,16 +254,18 @@ func checkMain(build config.Build) error {
 				}
 			}
 		}
-		return fmt.Errorf("build for %s does not contain a main function", build.Binary)
+		return fmt.Errorf("build for %s 不包含main方法", build.Binary)
 	}
+	//解析单个Go源文件的源代码，并返回相应的ast
 	file, err := parser.ParseFile(token.NewFileSet(), main, nil, 0)
 	if err != nil {
-		return fmt.Errorf("failed to parse file: %s: %w", main, err)
+		return fmt.Errorf("解析文件失败: %s: %w", main, err)
 	}
+	// 检查是否有 main 方法
 	if hasMain(file) {
 		return nil
 	}
-	return fmt.Errorf("build for %s does not contain a main function", build.Binary)
+	return fmt.Errorf("build for %s 不包含 main function", build.Binary)
 }
 
 // TODO: can be removed once we migrate from go 1.15 to 1.16.

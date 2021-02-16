@@ -7,13 +7,7 @@ import (
 	"github.com/goreleaser/goreleaser/internal/middleware"
 	"github.com/goreleaser/goreleaser/internal/pipe/artifactory"
 	"github.com/goreleaser/goreleaser/internal/pipe/blob"
-	"github.com/goreleaser/goreleaser/internal/pipe/brew"
 	"github.com/goreleaser/goreleaser/internal/pipe/custompublishers"
-	"github.com/goreleaser/goreleaser/internal/pipe/docker"
-	"github.com/goreleaser/goreleaser/internal/pipe/milestone"
-	"github.com/goreleaser/goreleaser/internal/pipe/release"
-	"github.com/goreleaser/goreleaser/internal/pipe/scoop"
-	"github.com/goreleaser/goreleaser/internal/pipe/snapcraft"
 	"github.com/goreleaser/goreleaser/internal/pipe/upload"
 	"github.com/goreleaser/goreleaser/pkg/context"
 )
@@ -39,15 +33,15 @@ var publishers = []Publisher{
 	upload.Pipe{},
 	custompublishers.Pipe{},
 	artifactory.Pipe{},
-	docker.Pipe{},
-	docker.ManifestPipe{},
-	snapcraft.Pipe{},
-	// This should be one of the last steps
-	release.Pipe{},
-	// brew and scoop use the release URL, so, they should be last
-	brew.Pipe{},
-	scoop.Pipe{},
-	milestone.Pipe{},
+	//docker.Pipe{},
+	//docker.ManifestPipe{},
+	//snapcraft.Pipe{},
+	// 这应该是最后的步骤之一
+	//release.Pipe{},
+	// brew和scoop使用发布URL，因此，它们应该是最后一个
+	//brew.Pipe{},
+	//scoop.Pipe{},
+	//milestone.Pipe{},
 }
 
 // Run the pipe.
@@ -58,7 +52,7 @@ func (Pipe) Run(ctx *context.Context) error {
 			middleware.ErrHandler(publisher.Publish),
 			middleware.ExtraPadding,
 		)(ctx); err != nil {
-			return fmt.Errorf("%s: failed to publish artifacts: %w", publisher.String(), err)
+			return fmt.Errorf("%s: 未能发布工件: %w", publisher.String(), err)
 		}
 	}
 	return nil

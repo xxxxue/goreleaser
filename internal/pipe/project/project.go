@@ -25,7 +25,7 @@ func (Pipe) Default(ctx *context.Context) error {
 		case ctx.Config.Release.Gitea.Name != "":
 			ctx.Config.ProjectName = ctx.Config.Release.Gitea.Name
 		default:
-			return fmt.Errorf("couldn't guess project_name, please add it to your config")
+			return fmt.Errorf("无法猜出project_name，请将其添加到您的配置中")
 		}
 	}
 	return nil

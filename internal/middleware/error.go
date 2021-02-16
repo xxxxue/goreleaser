@@ -15,7 +15,7 @@ func ErrHandler(action Action) Action {
 			return nil
 		}
 		if pipe.IsSkip(err) {
-			log.WithError(err).Warn("pipe skipped")
+			log.WithError(err).Warn("跳过管道")
 			return nil
 		}
 		return err

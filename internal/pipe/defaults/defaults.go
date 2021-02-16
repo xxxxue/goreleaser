@@ -20,6 +20,16 @@ func (Pipe) String() string {
 
 // Run the pipe.
 func (Pipe) Run(ctx *context.Context) error {
+	//#### 自己写的 设置默认值 开始
+	//设置默认名称
+	if ctx.Config.ProjectName == "" {
+		ctx.Config.ProjectName = "main"
+	}
+
+	// 清理 dist 目录
+	ctx.RmDist = true
+	//#### 自己写的 设置默认值 结束
+
 	if ctx.Config.Dist == "" {
 		ctx.Config.Dist = "dist"
 	}

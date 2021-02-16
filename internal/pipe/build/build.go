@@ -29,7 +29,7 @@ import (
 type Pipe struct{}
 
 func (Pipe) String() string {
-	return "building binaries"
+	return "构建二进制文件"
 }
 
 // Run the pipe.
@@ -90,6 +90,7 @@ func runPipeOnBuild(ctx *context.Context, build config.Build) error {
 		target := target
 		build := build
 		g.Go(func() error {
+			// 构建一些配置
 			opts, err := buildOptionsForTarget(ctx, build, target)
 			if err != nil {
 				return err
@@ -186,10 +187,12 @@ func buildOptionsForTarget(ctx *context.Context, build config.Build, target stri
 
 	build.Binary = binary
 	var name = build.Binary + ext
+
+	// 拼接完整地址
 	path, err := filepath.Abs(
 		filepath.Join(
 			ctx.Config.Dist,
-			fmt.Sprintf("%s_%s", build.ID, target),
+			fmt.Sprintf("%s_%s",build.ID , target),
 			name,
 		),
 	)
@@ -197,6 +200,7 @@ func buildOptionsForTarget(ctx *context.Context, build config.Build, target stri
 		return nil, err
 	}
 
+	// 显示输出信息
 	log.WithField("binary", path).Info("building")
 	buildOpts.Name = name
 	buildOpts.Path = path

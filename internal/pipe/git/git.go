@@ -19,7 +19,7 @@ import (
 type Pipe struct{}
 
 func (Pipe) String() string {
-	return "getting and validating git state"
+	return "获取并验证git状态"
 }
 
 // Run the pipe.
@@ -48,7 +48,7 @@ var fakeInfo = context.GitInfo{
 
 func getInfo(ctx *context.Context) (context.GitInfo, error) {
 	if !git.IsRepo() && ctx.Snapshot {
-		log.Warn("accepting to run without a git repo because this is a snapshot")
+		log.Warn("接受没有git repo的运行，因为这是快照")
 		return fakeInfo, nil
 	}
 	if !git.IsRepo() {
@@ -56,7 +56,7 @@ func getInfo(ctx *context.Context) (context.GitInfo, error) {
 	}
 	info, err := getGitInfo()
 	if err != nil && ctx.Snapshot {
-		log.WithError(err).Warn("ignoring errors because this is a snapshot")
+		log.WithError(err).Warn("忽略错误，因为这是快照")
 		if info.Commit == "" {
 			info = fakeInfo
 		}
@@ -68,23 +68,23 @@ func getInfo(ctx *context.Context) (context.GitInfo, error) {
 func getGitInfo() (context.GitInfo, error) {
 	branch, err := getBranch()
 	if err != nil {
-		return context.GitInfo{}, fmt.Errorf("couldn't get current branch: %w", err)
+		return context.GitInfo{}, fmt.Errorf("无法获得当前分支: %w", err)
 	}
 	short, err := getShortCommit()
 	if err != nil {
-		return context.GitInfo{}, fmt.Errorf("couldn't get current commit: %w", err)
+		return context.GitInfo{}, fmt.Errorf("无法获得当前提交: %w", err)
 	}
 	full, err := getFullCommit()
 	if err != nil {
-		return context.GitInfo{}, fmt.Errorf("couldn't get current commit: %w", err)
+		return context.GitInfo{}, fmt.Errorf("无法获得当前提交: %w", err)
 	}
 	date, err := getCommitDate()
 	if err != nil {
-		return context.GitInfo{}, fmt.Errorf("couldn't get commit date: %w", err)
+		return context.GitInfo{}, fmt.Errorf("无法获得提交日期: %w", err)
 	}
 	url, err := getURL()
 	if err != nil {
-		return context.GitInfo{}, fmt.Errorf("couldn't get remote URL: %w", err)
+		return context.GitInfo{}, fmt.Errorf("无法获取远程URL: %w", err)
 	}
 	tag, err := getTag()
 	if err != nil {
